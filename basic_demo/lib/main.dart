@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:zego_imkit/zego_imkit.dart';
-import 'login_page.dart';
+
+import 'package:zego_zimkit/zego_zimkit.dart';
+
+import 'package:zego_zimkit_demo/login_page.dart';
 
 void main() {
-  ZegoIMKit().init(
-    appID: , // your appid
-    appSign: '', // your appSign
+  ZIMKit().init(
+    appID: YourSecret.appID, // your appid
+    appSign: YourSecret.appSign, // your appSign
   );
-  runApp(const ZegoIMKitDemo());
+  runApp(const ZIMKitDemo());
 }
 
-class ZegoIMKitDemo extends StatelessWidget {
-  const ZegoIMKitDemo({Key? key}) : super(key: key);
+class ZIMKitDemo extends StatelessWidget {
+  const ZIMKitDemo({Key? key}) : super(key: key);
 
   // This widget is the root of your application.
   @override
@@ -20,7 +22,7 @@ class ZegoIMKitDemo extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Zego IMKit Demo',
       theme: ThemeData(primarySwatch: Colors.blue),
-      home: const ZegoIMKitDemoLoginPage(),
+      home: const ZIMKitDemoLoginPage(),
     );
   }
 }

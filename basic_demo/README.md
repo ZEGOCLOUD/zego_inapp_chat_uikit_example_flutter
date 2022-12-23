@@ -1,5 +1,5 @@
 
-# ZegoIMKit(ZegoCloud In-App Chat UIKit)
+# ZIMKit(ZegoCloud In-App Chat UIKit)
 
 🥳beta support:
 - Create peer-to-peer chat / Create group chat/ Join group chat
@@ -14,11 +14,11 @@
 
 ```
 void main() {
-  ZegoIMKit().init(
+  ZIMKit().init(
     appID: , // your appid
     appSign: '', // your appSign
   );
-  runApp(const ZegoIMKitDemo());
+  runApp(const ZIMKitDemo());
 }
 ```
 
@@ -28,12 +28,12 @@ void main() {
 ```dart
 ElevatedButton(
     onPressed: () async {
-        await ZegoIMKit()
-            .login(id: userID.text, name: userName.text);
+        await ZIMKit()
+            .connectUser(id: userID.text, name: userName.text);
             Navigator.of(context).pushReplacement(
             MaterialPageRoute(
                 builder: (context) =>
-                    const ZegoIMKitDemoHomePage(),
+                    const ZIMKitDemoHomePage(),
             ),
         );
     },
@@ -44,8 +44,8 @@ ElevatedButton(
 ## 3. enjoy it
 
 ```dart
-class ZegoIMKitDemoHomePage extends StatelessWidget {
-  const ZegoIMKitDemoHomePage({Key? key}) : super(key: key);
+class ZIMKitDemoHomePage extends StatelessWidget {
+  const ZIMKitDemoHomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -56,11 +56,11 @@ class ZegoIMKitDemoHomePage extends StatelessWidget {
           title: const Text('Conversations'),
           actions: const [HomePagePopupMenuButton()],
         ),
-        body: ZegoConversationListView(
+        body: ZIMKitConversationListView(
           onPressed: (context, conversation, defaultAction) {
             Navigator.push(context, MaterialPageRoute(
               builder: (context) {
-                return ZegoMessageListPage(
+                return ZIMKitMessageListPage(
                   conversationID: conversation.id,
                   conversationType: conversation.type,
                 );

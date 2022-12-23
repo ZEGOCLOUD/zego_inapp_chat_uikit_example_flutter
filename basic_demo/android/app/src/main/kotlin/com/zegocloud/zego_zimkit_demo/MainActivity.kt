@@ -1,4 +1,4 @@
-package com.zegocloud.zego_imkit_demo
+package com.zegocloud.zego_zimkit_demo
 
 import io.flutter.embedding.android.FlutterActivity
 

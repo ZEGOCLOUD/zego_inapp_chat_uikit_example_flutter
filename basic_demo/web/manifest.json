@@ -1,6 +1,6 @@
 {
-    "name": "zego_imkit_demo",
-    "short_name": "zego_imkit_demo",
+    "name": "zego_zimkit_demo",
+    "short_name": "zego_zimkit_demo",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
