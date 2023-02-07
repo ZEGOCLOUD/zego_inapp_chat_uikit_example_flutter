@@ -12,10 +12,7 @@ dependencies:
     sdk: flutter
 
   cupertino_icons: ^1.0.2
-  zego_zimkit:
-    git:
-      url: https://github.com/ZEGOCLOUD/zego_inapp_chat_uikit_flutter.git
-      ref: 0.0.7
+  zego_zimkit: ^0.9.8-prerelease
 
 dev_dependencies:
   flutter_test:
