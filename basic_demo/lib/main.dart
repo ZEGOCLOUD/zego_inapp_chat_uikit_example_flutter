@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:zego_zimkit/zego_zimkit.dart';
-
 import 'package:zego_zimkit_demo/login_page.dart';
+import 'package:zego_zimkit_demo/secret.dart';
 
 void main() {
   ZIMKit().init(
