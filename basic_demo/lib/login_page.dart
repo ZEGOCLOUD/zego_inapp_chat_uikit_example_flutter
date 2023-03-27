@@ -1,11 +1,10 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-
 import 'package:zego_zimkit/zego_zimkit.dart';
-
 import 'package:zego_zimkit_demo/home_page.dart';
-import 'package:zego_zimkit_demo/utils.dart';
+import 'package:zego_zimkit_demo/main.dart';
+import 'package:zego_zimkit_demo/random_name.dart';
 
 final String testRandomUserID = Random().nextInt(10000).toString();
 final String testRandomUserName = randomName();
@@ -52,19 +51,29 @@ class _ZIMKitDemoLoginPageState extends State<ZIMKitDemoLoginPage> {
                       ),
                       TextFormField(
                         controller: userName,
-                        decoration:
-                            const InputDecoration(labelText: 'user name'),
+                        decoration: const InputDecoration(labelText: 'user name'),
                       ),
                       const SizedBox(height: 20),
                       ElevatedButton(
                         onPressed: () async {
-                          await ZIMKit().connectUser(
-                              id: userID.text, name: userName.text);
-                          Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(
-                              builder: (context) => const ZIMKitDemoHomePage(),
-                            ),
-                          );
+                          await ZIMKit().connectUser(id: userID.text, name: userName.text).then((errorCode) {
+                            if (mounted) {
+                              if (errorCode == 0) {
+                                onUserLogin(userID.text, userName.text);
+                                Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                    builder: (context) => const ZIMKitDemoHomePage(),
+                                  ),
+                                );
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text('login failed, errorCode: $errorCode'),
+                                  ),
+                                );
+                              }
+                            }
+                          });
                         },
                         child: const Text('login'),
                       )
