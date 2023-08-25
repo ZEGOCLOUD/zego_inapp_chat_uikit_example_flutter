@@ -46,6 +46,9 @@ class ZIMKitDemoHomePage extends StatelessWidget {
                         ]
                       : [],
                   onMessageItemLongPress: _onMessageItemLongPress,
+                  messageListBackgroundBuilder: (context, defaultWidget) {
+                    return const ColoredBox(color: Colors.white);
+                  },
                 );
               },
             ));
