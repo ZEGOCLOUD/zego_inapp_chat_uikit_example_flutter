@@ -1,6 +1,6 @@
 name: zego_zimkit_demo
 description: A new Flutter project.
-publish_to: 'none' 
+publish_to: "none"
 version: 1.0.0+1
 
 environment:
@@ -12,9 +12,9 @@ dependencies:
     sdk: flutter
 
   cupertino_icons: ^1.0.2
-  zego_zimkit: ^1.8.1
-  zego_uikit_prebuilt_call: ^3.12.3
-  zego_uikit_signaling_plugin: ^2.5.1
+  zego_zimkit: ^1.9.0
+  zego_uikit_prebuilt_call: ^3.15.1
+  zego_uikit_signaling_plugin: ^2.5.2
 
 dev_dependencies:
   flutter_test:

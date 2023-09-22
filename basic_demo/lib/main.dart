@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
 import 'package:zego_uikit_signaling_plugin/zego_uikit_signaling_plugin.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
-import 'package:zego_zimkit_demo/login_page.dart';
+
+import 'login_page.dart';
+
+const YourAppID = ;
+const YourAppSign = ;
 
 void main() {
   /// 1.1 init ZIMKit
