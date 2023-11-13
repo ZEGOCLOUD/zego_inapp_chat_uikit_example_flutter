@@ -1,8 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:zego_zimkit/pages/pages.dart';
-import 'package:zego_zimkit/services/services.dart';
+import 'package:zego_zimkit/zego_zimkit.dart';
 
 import 'home_page.dart';
 

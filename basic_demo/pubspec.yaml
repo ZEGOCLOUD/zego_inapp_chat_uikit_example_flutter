@@ -12,9 +12,9 @@ dependencies:
     sdk: flutter
 
   cupertino_icons: ^1.0.2
-  zego_zimkit: ^1.9.0
-  zego_uikit_prebuilt_call: ^3.15.5
-  zego_uikit_signaling_plugin: ^2.5.5
+  zego_zimkit: ^1.11.1
+  zego_uikit_prebuilt_call: ^3.17.9
+  zego_uikit_signaling_plugin: ^2.6.6
 
 dev_dependencies:
   flutter_test:
