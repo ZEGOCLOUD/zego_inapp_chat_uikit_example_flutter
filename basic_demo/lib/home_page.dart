@@ -36,9 +36,10 @@ Widget demoMessageListPage(BuildContext context, ZIMKitConversation conversation
     conversationID: conversation.id,
     conversationType: conversation.type,
     onMessageSent: (ZIMKitMessage message) {
-      if(message.info.sentStatus == ZIMMessageSentStatus.failed){
-        debugPrint('message sent faild');
-      }else{
+      if (message.info.error != null) {
+        debugPrint(
+            'onMessageSent error: ${message.info.error!.message}, ${message.info.error!.code}');
+      } else {
         debugPrint('onMessageSent: ${message.type.name}');
       }
     },
