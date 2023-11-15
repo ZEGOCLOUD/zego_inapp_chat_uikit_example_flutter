@@ -6,6 +6,8 @@
 
 > If you have any questions regarding bugs and feature requests, visit the [ZEGOCLOUD community](https://discord.gg/EtNRATttyp) .
 
+document: [https://docs.zegocloud.com/article/15604](https://docs.zegocloud.com/article/15604)
+
 ## 1. init imkit
 
 ```
@@ -22,10 +24,10 @@ void main() {
 ## 2. user login
 
 ```dart
+// connectUser
 ElevatedButton(
     onPressed: () async {
-        await ZIMKit()
-            .connectUser(id: userID.text, name: userName.text);
+        await ZIMKit().connectUser(id: userID.text, name: userName.text);
             Navigator.of(context).pushReplacement(
             MaterialPageRoute(
                 builder: (context) =>
