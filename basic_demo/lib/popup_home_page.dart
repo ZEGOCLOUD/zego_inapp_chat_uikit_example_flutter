@@ -21,7 +21,8 @@ class _HomePagePopupMenuButtonState extends State<HomePagePopupMenuButton> {
   Widget build(BuildContext context) {
     return PopupMenuButton(
       shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(15))),
+        borderRadius: BorderRadius.all(Radius.circular(15)),
+      ),
       position: PopupMenuPosition.under,
       icon: const Icon(CupertinoIcons.add_circled),
       itemBuilder: (context) {
@@ -29,15 +30,17 @@ class _HomePagePopupMenuButtonState extends State<HomePagePopupMenuButton> {
           PopupMenuItem(
             value: 'New Chat',
             child: const ListTile(
-                leading: Icon(CupertinoIcons.chat_bubble_2_fill),
-                title: Text('New Chat', maxLines: 1)),
+              leading: Icon(CupertinoIcons.chat_bubble_2_fill),
+              title: Text('New Chat', maxLines: 1),
+            ),
             onTap: () => showDefaultNewPeerChatDialog(context),
           ),
           PopupMenuItem(
             value: 'New Group',
             child: const ListTile(
-                leading: Icon(CupertinoIcons.person_2_fill),
-                title: Text('New Group', maxLines: 1)),
+              leading: Icon(CupertinoIcons.person_2_fill),
+              title: Text('New Group', maxLines: 1),
+            ),
             onTap: () => showDefaultNewGroupChatDialog(context),
           ),
           PopupMenuItem(

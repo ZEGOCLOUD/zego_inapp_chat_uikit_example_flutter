@@ -4,19 +4,26 @@ import 'package:zego_zimkit/zego_zimkit.dart';
 
 import 'popup_group_chat.dart';
 
-List<Widget>? demoAppBarActions(context, conversation) {
+List<Widget>? demoAppBarActions(
+  BuildContext context,
+  ZIMKitConversation conversation,
+) {
   return conversation.type == ZIMConversationType.peer
       ? peerChatCallButtons(context, conversation)
       : [GroupPagePopupMenuButton(groupID: conversation.id)];
 }
 
-List<Widget> peerChatCallButtons(context, conversation) {
+List<Widget> peerChatCallButtons(
+  BuildContext context,
+  ZIMKitConversation conversation,
+) {
   return [
     for (final isVideoCall in [true, false])
       ZegoSendCallInvitationButton(
         iconSize: const Size(40, 40),
         buttonSize: const Size(50, 50),
         isVideoCall: isVideoCall,
+        resourceID: "zego_data",
         invitees: [ZegoUIKitUser(id: conversation.id, name: conversation.name)],
         onPressed: (String code, String message, List<String> errorInvitees) {
           onCallInvitationSent(context, code, message, errorInvitees);

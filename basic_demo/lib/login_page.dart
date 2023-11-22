@@ -1,14 +1,11 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
 
+import 'constants.dart';
 import 'home_page.dart';
 import 'main.dart';
-import 'random_name.dart';
-
-final String testRandomUserID = Random().nextInt(10000).toString();
-final String testRandomUserName = randomName();
+import 'utils.dart';
 
 class ZIMKitDemoLoginPage extends StatefulWidget {
   const ZIMKitDemoLoginPage({Key? key}) : super(key: key);
@@ -19,14 +16,19 @@ class ZIMKitDemoLoginPage extends StatefulWidget {
 
 class _ZIMKitDemoLoginPageState extends State<ZIMKitDemoLoginPage> {
   /// Users who use the same callID can in the same call.
-  final userID = TextEditingController(text: testRandomUserID);
-  final userName = TextEditingController(text: testRandomUserName);
+  final userID = TextEditingController(text: 'user_id');
+  final userName = TextEditingController(text: '');
 
   @override
   void initState() {
     super.initState();
-    userID.text = testRandomUserID;
-    userName.text = testRandomUserName;
+
+    getUniqueUserId().then((_userID) async {
+      setState(() {
+        userID.text = _userID;
+        userName.text = randomName(key: _userID);
+      });
+    });
   }
 
   @override
@@ -55,34 +57,7 @@ class _ZIMKitDemoLoginPageState extends State<ZIMKitDemoLoginPage> {
                         decoration: const InputDecoration(labelText: 'user name'),
                       ),
                       const SizedBox(height: 20),
-                      ElevatedButton(
-                        onPressed: () async {
-                          await ZIMKit()
-                              .connectUser(
-                                  id: userID.text,
-                                  name: userName.text,
-                                  avatarUrl: 'https://robohash.org/${userID.text}.png?set=set4')
-                              .then((errorCode) {
-                            if (mounted) {
-                              if (errorCode == 0) {
-                                onUserLogin(userID.text, userName.text);
-                                Navigator.of(context).pushReplacement(
-                                  MaterialPageRoute(
-                                    builder: (context) => const ZIMKitDemoHomePage(),
-                                  ),
-                                );
-                              } else {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text('login failed, errorCode: $errorCode'),
-                                  ),
-                                );
-                              }
-                            }
-                          });
-                        },
-                        child: const Text('login'),
-                      )
+                      loginButton(),
                     ],
                   ),
                 ),
@@ -91,6 +66,48 @@ class _ZIMKitDemoLoginPageState extends State<ZIMKitDemoLoginPage> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget loginButton() {
+    return ElevatedButton(
+      onPressed: () async {
+        await ZIMKit()
+            .connectUser(
+          id: userID.text,
+          name: userName.text,
+          avatarUrl: 'https://robohash.org/${userID.text}.png?set=set4',
+        )
+            .then((errorCode) async {
+          if (errorCode == 0) {
+            /// cache login user info
+            final prefs = await SharedPreferences.getInstance();
+            prefs.setString(cacheUserIDKey, userID.text);
+            currentUser.id = userID.text;
+            currentUser.name = userName.text;
+
+            onUserLogin(userID.text, userName.text);
+            if (mounted) {
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (context) => const ZIMKitDemoHomePage(),
+                ),
+              );
+            }
+          } else {
+            if (mounted) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                    'login failed, errorCode: $errorCode',
+                  ),
+                ),
+              );
+            }
+          }
+        });
+      },
+      child: const Text('login'),
     );
   }
 }

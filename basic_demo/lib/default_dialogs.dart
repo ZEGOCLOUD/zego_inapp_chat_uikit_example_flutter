@@ -44,14 +44,18 @@ void showDefaultNewPeerChatDialog(BuildContext context) {
       if (ok != true) return;
       if (userIDController.text.isNotEmpty) {
         Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return demoMessageListPage(context, ZIMKitConversation()..id = userIDController.text);
+          return demoMessageListPage(
+            context,
+            ZIMKitConversation()..id = userIDController.text,
+          );
         }));
       }
     });
   });
 }
 
-void onCallInvitationSent(BuildContext context, String code, String message, List<String> errorInvitees) {
+void onCallInvitationSent(BuildContext context, String code, String message,
+    List<String> errorInvitees) {
   var log = '';
   if (errorInvitees.isNotEmpty) {
     log = "User doesn't exist or is offline: ${errorInvitees[0]}";
@@ -142,7 +146,8 @@ void showDefaultNewGroupChatDialog(BuildContext context) {
       },
     ).then((bool? ok) {
       if (ok != true) return;
-      if (groupNameController.text.isNotEmpty && groupUsersController.text.isNotEmpty) {
+      if (groupNameController.text.isNotEmpty &&
+          groupUsersController.text.isNotEmpty) {
         ZIMKit()
             .createGroup(
           groupNameController.text,
@@ -262,7 +267,9 @@ void showDefaultAddUserToGroupDialog(BuildContext context, String groupID) {
     ).then((bool? ok) {
       if (ok != true) return;
       if (groupUsersController.text.isNotEmpty) {
-        ZIMKit().addUersToGroup(groupID, groupUsersController.text.split(',')).then((int? errorCode) {
+        ZIMKit()
+            .addUersToGroup(groupID, groupUsersController.text.split(','))
+            .then((int? errorCode) {
           if (errorCode != 0) {
             debugPrint('addUersToGroup faild');
           }
@@ -272,7 +279,8 @@ void showDefaultAddUserToGroupDialog(BuildContext context, String groupID) {
   });
 }
 
-void showDefaultRemoveUserFromGroupDialog(BuildContext context, String groupID) {
+void showDefaultRemoveUserFromGroupDialog(
+    BuildContext context, String groupID) {
   final groupUsersController = TextEditingController();
   Timer.run(() {
     showDialog<bool>(
@@ -317,7 +325,9 @@ void showDefaultRemoveUserFromGroupDialog(BuildContext context, String groupID) 
     ).then((bool? ok) {
       if (ok != true) return;
       if (groupUsersController.text.isNotEmpty) {
-        ZIMKit().removeUesrsFromGroup(groupID, groupUsersController.text.split(',')).then((int? errorCode) {
+        ZIMKit()
+            .removeUesrsFromGroup(groupID, groupUsersController.text.split(','))
+            .then((int? errorCode) {
           if (errorCode != 0) {
             debugPrint('addUersToGroup faild');
           }
@@ -327,7 +337,8 @@ void showDefaultRemoveUserFromGroupDialog(BuildContext context, String groupID) 
   });
 }
 
-Future<dynamic> showDefaultUserListDialog(BuildContext context, String groupID) {
+Future<dynamic> showDefaultUserListDialog(
+    BuildContext context, String groupID) {
   return showModalBottomSheet(
       context: context,
       builder: (context) {
@@ -338,17 +349,21 @@ Future<dynamic> showDefaultUserListDialog(BuildContext context, String groupID) 
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text('MemberList', style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600)),
+                const Text('MemberList',
+                    style:
+                        TextStyle(fontSize: 22, fontWeight: FontWeight.w600)),
                 const SizedBox(height: 5),
                 ValueListenableBuilder(
                   valueListenable: ZIMKit().queryGroupMemberList(groupID),
-                  builder: (BuildContext context, List<ZIMGroupMemberInfo> memberList, Widget? child) {
+                  builder: (BuildContext context,
+                      List<ZIMGroupMemberInfo> memberList, Widget? child) {
                     return Container(
                       padding: const EdgeInsets.all(10),
                       width: double.infinity,
                       height: 200,
                       child: GridView.builder(
-                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 4,
                           crossAxisSpacing: 10,
                           mainAxisSpacing: 10,
