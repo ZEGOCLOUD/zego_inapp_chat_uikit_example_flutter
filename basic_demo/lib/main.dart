@@ -31,7 +31,7 @@ void main() async {
     appID: yourAppID /*input your AppID*/,
     appSign: yourAppSign /*input your AppSign*/,
     notificationConfig: ZegoZIMKitNotificationConfig(
-      resourceID: 'zego_data',
+      resourceID: 'zego_data_zim',
       androidNotificationConfig: ZegoZIMKitAndroidNotificationConfig(
         channelID: 'ZIM Message',
         channelName: 'Message',
