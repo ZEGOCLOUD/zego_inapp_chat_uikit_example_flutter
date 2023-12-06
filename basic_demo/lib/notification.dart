@@ -61,7 +61,7 @@ class NotificationManager {
   }
 
   Future<void> _onMessageArrived() async {
-    final messages = ZIMKitCore.instance.db.messageArrivedNotifier.value;
+    final messages = ZIMKit().getOnMessageReceivedNotifier().value;
     if (messages == null) return;
     showNotifications(messages);
   }
