@@ -96,7 +96,7 @@ class NotificationManager {
   int initTimestamp = DateTime.now().millisecondsSinceEpoch;
   Future<void> showNotifications(ZIMKitReceivedMessages messages) async {
     messages.receiveMessages
-        .where((e) => messages.receiveMessages.last.info.timestamp < initTimestamp)
+        .where((e) => messages.receiveMessages.last.info.timestamp > initTimestamp)
         .toList()
         .forEach((message) async {
       var content = '[${message.type.name}]';
