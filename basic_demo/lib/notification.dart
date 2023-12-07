@@ -71,8 +71,34 @@ class NotificationManager {
     debugPrint('cancelAllNotifications');
   }
 
+  static void onNotificationTappedBackground(NotificationResponse response) {
+    debugPrint('onNotificationTappedBackground ${response.payload}');
+    NotificationManager().cancelAllNotifications();
+
+    try {
+      final Map payload = jsonDecode(response.payload!);
+      navigatorKey.currentState?.push(
+        MaterialPageRoute(
+          builder: (context) {
+            return demoMessageListPageID(
+              navigatorKey.currentContext!,
+              id: payload['id'],
+              type: ZIMConversationType.values[payload['typeIndex']],
+            );
+          },
+        ),
+      );
+    } catch (e) {
+      debugPrint('decode error $e');
+    }
+  }
+
+  int initTimestamp = DateTime.now().millisecondsSinceEpoch;
   Future<void> showNotifications(ZIMKitReceivedMessages messages) async {
-    messages.receiveMessages.forEach((message) async {
+    messages.receiveMessages
+        .where((e) => messages.receiveMessages.last.info.timestamp < initTimestamp)
+        .toList()
+        .forEach((message) async {
       var content = '[${message.type.name}]';
       if (ZIMKitMessageType.text == message.type) {
         content = message.textContent?.text ?? '';
@@ -103,27 +129,5 @@ class NotificationManager {
 
       notificationID++;
     });
-  }
-
-  static void onNotificationTappedBackground(NotificationResponse response) {
-    debugPrint('onNotificationTappedBackground ${response.payload}');
-    NotificationManager().cancelAllNotifications();
-
-    try {
-      final Map payload = jsonDecode(response.payload!);
-      navigatorKey.currentState?.push(
-        MaterialPageRoute(
-          builder: (context) {
-            return demoMessageListPageID(
-              navigatorKey.currentContext!,
-              id: payload['id'],
-              type: ZIMConversationType.values[payload['typeIndex']],
-            );
-          },
-        ),
-      );
-    } catch (e) {
-      debugPrint('decode error $e');
-    }
   }
 }
