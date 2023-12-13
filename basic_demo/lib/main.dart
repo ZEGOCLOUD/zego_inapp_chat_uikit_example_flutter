@@ -36,7 +36,7 @@ void main() async {
         channelID: 'ZIM Message',
         channelName: 'Message',
         sound: 'message',
-        icon: 'notification_icon',
+        icon: 'message',
       ),
     ),
   );
@@ -142,12 +142,14 @@ void onUserLogin(String id, String name) {
     androidNotificationConfig: ZegoAndroidNotificationConfig(
       channelID: 'ZegoUIKit',
       channelName: 'Call Notifications',
-      sound: 'notification',
-      icon: 'notification_icon',
+      sound: 'call',
+      icon: 'call',
+
+      /// message notification
       messageChannelID: 'Message',
       messageChannelName: 'Message',
       messageSound: 'message',
-      messageIcon: 'notification_icon',
+      messageIcon: 'message',
     ),
   );
 }

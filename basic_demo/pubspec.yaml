@@ -12,9 +12,9 @@ dependencies:
     sdk: flutter
 
   cupertino_icons: ^1.0.2
-  zego_zimkit: ^1.13.1
-  zego_uikit_prebuilt_call: ^3.17.9
-  zego_uikit_signaling_plugin: ^2.6.6
+  zego_zimkit: ^1.13.4
+  zego_uikit_prebuilt_call: ^3.18.1
+  zego_uikit_signaling_plugin: ^2.7.2
   flutter_local_notifications: ^16.1.0
   shared_preferences: any
   cached_network_image: ^3.3.0

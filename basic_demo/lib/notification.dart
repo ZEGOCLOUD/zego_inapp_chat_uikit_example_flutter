@@ -44,7 +44,7 @@ class NotificationManager {
 
     await flutterLocalNotificationsPlugin.initialize(
       const InitializationSettings(
-        android: AndroidInitializationSettings('@drawable/notification_icon'),
+        android: AndroidInitializationSettings('@drawable/message'),
         iOS: DarwinInitializationSettings(
             // requestSoundPermission: true,
             // requestBadgePermission: false,
