@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
 
-import 'home_page.dart';
+import 'chatting_page.dart';
 import 'main.dart';
 
 const demoChannelID = 'your channel id';
@@ -15,6 +15,7 @@ class NotificationManager {
   factory NotificationManager() => instance;
   NotificationManager._internal();
   static NotificationManager instance = NotificationManager._internal();
+  String? ignoreConversationID;
 
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
@@ -63,6 +64,7 @@ class NotificationManager {
   Future<void> _onMessageArrived() async {
     final messages = ZIMKit().getOnMessageReceivedNotifier().value;
     if (messages == null) return;
+    if (messages.id == ignoreConversationID) return;
     showNotifications(messages);
   }
 
@@ -80,10 +82,9 @@ class NotificationManager {
       navigatorKey.currentState?.push(
         MaterialPageRoute(
           builder: (context) {
-            return demoMessageListPageID(
-              navigatorKey.currentContext!,
-              id: payload['id'],
-              type: ZIMConversationType.values[payload['typeIndex']],
+            return DemoCahttingMessageListPage(
+              conversationID: payload['id'],
+              conversationType: ZIMConversationType.values[payload['typeIndex']],
             );
           },
         ),

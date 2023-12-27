@@ -96,7 +96,9 @@ class ZIMKitDemoState extends State<ZIMKitDemo> {
       debugShowCheckedModeBanner: false,
       title: 'ZIMKit Demo',
       theme: ThemeData(primarySwatch: Colors.blue),
-      home: currentUser.id.isEmpty ? const ZIMKitDemoLoginPage() : autoConnectting(),
+      home: currentUser.id.isEmpty
+          ? const ZIMKitDemoLoginPage()
+          : autoConnectting(),
     );
   }
 
@@ -105,7 +107,9 @@ class ZIMKitDemoState extends State<ZIMKitDemo> {
       valueListenable: autoConnectDoneNotifier,
       builder: (context, connectDone, _) {
         if (connectDone) {
-          return autoConnectSuccess ? const ZIMKitDemoHomePage() : const ZIMKitDemoLoginPage();
+          return autoConnectSuccess
+              ? const ZIMKitDemoHomePage()
+              : const ZIMKitDemoLoginPage();
         }
 
         /// waiting for the result of auto connect
@@ -140,6 +144,7 @@ void onUserLogin(String id, String name) {
     userName: name,
     plugins: [ZegoUIKitSignalingPlugin()],
     androidNotificationConfig: ZegoAndroidNotificationConfig(
+      /// call notification
       channelID: 'ZegoUIKit',
       channelName: 'Call Notifications',
       sound: 'call',
