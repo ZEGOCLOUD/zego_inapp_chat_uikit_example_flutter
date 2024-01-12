@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
 
 import 'chatting_page_actions.dart';
+import 'demo_widgets/demo_widgets.dart';
 import 'notification.dart';
 
 class DemoCahttingMessageListPage extends StatefulWidget {
@@ -64,6 +65,22 @@ class _DemoCahttingMessageListPageState extends State<DemoCahttingMessageListPag
       messageListBackgroundBuilder: (context, defaultWidget) {
         return const ColoredBox(color: Colors.white);
       },
+      /// If you want to test customMessage, you can uncomment the code below.
+      /// 
+      // messageContentBuilder: (context, message, defaultWidget) {
+      //   if (message.type == ZIMMessageType.custom &&
+      //       message.customContent!.type == DemoCustomMessageType.redEnvelope.index) {
+      //     return RedEnvelopeMessage(message: message);
+      //   } else {
+      //     return defaultWidget;
+      //   }
+      // },
+      // messageInputActions: [
+      //   ZIMKitMessageInputAction.right(demoSendRedEnvelopeButton(
+      //     widget.conversationID,
+      //     widget.conversationType,
+      //   )),
+      // ],
     );
   }
 

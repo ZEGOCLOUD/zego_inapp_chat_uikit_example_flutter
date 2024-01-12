@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:zego_zimkit/zego_zimkit.dart';
 
 import 'demo_widgets/default_dialogs.dart';
 
@@ -7,8 +8,7 @@ class HomePagePopupMenuButton extends StatefulWidget {
   const HomePagePopupMenuButton({Key? key}) : super(key: key);
 
   @override
-  State<HomePagePopupMenuButton> createState() =>
-      _HomePagePopupMenuButtonState();
+  State<HomePagePopupMenuButton> createState() => _HomePagePopupMenuButtonState();
 }
 
 class _HomePagePopupMenuButtonState extends State<HomePagePopupMenuButton> {
@@ -45,10 +45,18 @@ class _HomePagePopupMenuButtonState extends State<HomePagePopupMenuButton> {
           ),
           PopupMenuItem(
             value: 'Join Group',
-            child: const ListTile(
-                leading: Icon(Icons.group_add),
-                title: Text('Join Group', maxLines: 1)),
+            child: const ListTile(leading: Icon(Icons.group_add), title: Text('Join Group', maxLines: 1)),
             onTap: () => showDefaultJoinGroupDialog(context),
+          ),
+          PopupMenuItem(
+            value: 'Delete All',
+            child: const ListTile(leading: Icon(Icons.delete), title: Text('Delete All', maxLines: 1)),
+            onTap: () {
+              ZIMKit().deleteAllConversation(
+                isAlsoDeleteFromServer: true,
+                isAlsoDeleteMessages: true,
+              );
+            },
           ),
         ];
       },

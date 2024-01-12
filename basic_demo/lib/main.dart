@@ -96,9 +96,7 @@ class ZIMKitDemoState extends State<ZIMKitDemo> {
       debugShowCheckedModeBanner: false,
       title: 'ZIMKit Demo',
       theme: ThemeData(primarySwatch: Colors.blue),
-      home: currentUser.id.isEmpty
-          ? const ZIMKitDemoLoginPage()
-          : autoConnectting(),
+      home: currentUser.id.isEmpty ? const ZIMKitDemoLoginPage() : autoConnectting(),
     );
   }
 
@@ -107,9 +105,7 @@ class ZIMKitDemoState extends State<ZIMKitDemo> {
       valueListenable: autoConnectDoneNotifier,
       builder: (context, connectDone, _) {
         if (connectDone) {
-          return autoConnectSuccess
-              ? const ZIMKitDemoHomePage()
-              : const ZIMKitDemoLoginPage();
+          return autoConnectSuccess ? const ZIMKitDemoHomePage() : const ZIMKitDemoLoginPage();
         }
 
         /// waiting for the result of auto connect
@@ -143,18 +139,20 @@ void onUserLogin(String id, String name) {
     userID: id,
     userName: name,
     plugins: [ZegoUIKitSignalingPlugin()],
-    androidNotificationConfig: ZegoAndroidNotificationConfig(
-      /// call notification
-      channelID: 'ZegoUIKit',
-      channelName: 'Call Notifications',
-      sound: 'call',
-      icon: 'call',
+    notificationConfig: ZegoCallInvitationNotificationConfig(
+      androidNotificationConfig: ZegoAndroidNotificationConfig(
+        /// call notification
+        channelID: 'ZegoUIKit',
+        channelName: 'Call Notifications',
+        sound: 'call',
+        icon: 'call',
 
-      /// message notification
-      messageChannelID: 'Message',
-      messageChannelName: 'Message',
-      messageSound: 'message',
-      messageIcon: 'message',
+        /// message notification
+        messageChannelID: 'Message',
+        messageChannelName: 'Message',
+        messageSound: 'message',
+        messageIcon: 'message',
+      ),
     ),
   );
 }
