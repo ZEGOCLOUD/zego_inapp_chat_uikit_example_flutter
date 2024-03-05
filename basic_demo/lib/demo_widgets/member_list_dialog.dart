@@ -43,6 +43,7 @@ Future<dynamic> showDefaultGroupMemberListDialog(BuildContext context, String gr
                             final memberItemIsMe = memberItem.userID == ZIMKit().currentUser()!.baseInfo.userID;
                             final memberItemName =
                                 memberItem.memberNickname.isNotEmpty ? memberItem.memberNickname : memberItem.userName;
+
                             return GestureDetector(
                               onTap: () async {
                                 debugPrint('click member: ${memberItem.userID}');
@@ -69,60 +70,83 @@ Future<dynamic> showDefaultGroupMemberListDialog(BuildContext context, String gr
                                           Row(children: [
                                             Text(memberItemName, maxLines: 1, overflow: TextOverflow.clip),
                                             Text(memberItem.memberRole == ZIMGroupMemberRole.owner ? '(Owner)' : ''),
+                                            Text(memberItem.memberRole == 2 ? '(Manager)' : ''),
                                             Text(memberItemIsMe ? '(Me)' : ''),
                                           ]),
                                           Text('ID:${memberItem.userID}'),
                                         ]),
                                   ]),
                                   Row(children: [
-                                    ValueListenableBuilder(
-                                      valueListenable: ZIMKit().queryGroupOwner(groupID),
-                                      builder: (context, ZIMGroupMemberInfo? owner, _) {
-                                        final imGroupOwner = owner?.userID == ZIMKit().currentUser()?.baseInfo.userID;
-                                        if (!memberItemIsMe) {
-                                          return PopupMenuButton(
-                                            shape: const RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.all(Radius.circular(15))),
-                                            position: PopupMenuPosition.under,
-                                            icon: const Icon(Icons.more_horiz),
-                                            itemBuilder: (context) {
-                                              return [
-                                                if (imGroupOwner) ...[
-                                                  PopupMenuItem(
-                                                    child: const ListTile(
-                                                        leading: Icon(Icons.group_remove), title: Text('Remove User')),
-                                                    onTap: () =>
-                                                        ZIMKit().removeUesrsFromGroup(groupID, [memberItem.userID]),
-                                                  ),
-                                                  PopupMenuItem(
-                                                    child: const ListTile(
-                                                        leading: Icon(Icons.group_remove),
-                                                        title: Text('Transfer Group Owner')),
-                                                    onTap: () =>
-                                                        ZIMKit().transferGroupOwner(groupID, memberItem.userID),
-                                                  ),
-                                                ],
-                                                PopupMenuItem(
-                                                  child: const ListTile(
-                                                      leading: Icon(Icons.chat), title: Text('Private Chat')),
-                                                  onTap: () {
-                                                    Navigator.pushReplacement(context,
-                                                        MaterialPageRoute(builder: (context) {
-                                                      return DemoCahttingMessageListPage(
-                                                        conversationID: memberItem.userID,
-                                                        conversationType: ZIMConversationType.group,
-                                                      );
-                                                    }));
-                                                  },
-                                                ),
-                                              ];
-                                            },
-                                          );
-                                        } else {
-                                          return const SizedBox.shrink();
-                                        }
+                                    FutureBuilder(
+                                      future: ZIMKit()
+                                          .queryGroupMemberInfo(groupID, ZIMKit().currentUser()?.baseInfo.userID ?? ''),
+                                      builder: (_, AsyncSnapshot<ZIMGroupMemberInfo?> snapshot) {
+                                        final imGroupManager = snapshot.hasData && (snapshot.data?.memberRole == 2);
+                                        return ValueListenableBuilder(
+                                          valueListenable: ZIMKit().queryGroupOwner(groupID),
+                                          builder: (context, ZIMGroupMemberInfo? owner, _) {
+                                            final imGroupOwner =
+                                                owner?.userID == ZIMKit().currentUser()?.baseInfo.userID;
+                                            if (!memberItemIsMe) {
+                                              return PopupMenuButton(
+                                                shape: const RoundedRectangleBorder(
+                                                    borderRadius: BorderRadius.all(Radius.circular(15))),
+                                                position: PopupMenuPosition.under,
+                                                icon: const Icon(Icons.more_horiz),
+                                                itemBuilder: (context) {
+                                                  return [
+                                                    if (imGroupOwner || imGroupManager) ...[
+                                                      PopupMenuItem(
+                                                        child: const ListTile(
+                                                            leading: Icon(Icons.group_remove),
+                                                            title: Text('Remove User')),
+                                                        onTap: () =>
+                                                            ZIMKit().removeUesrsFromGroup(groupID, [memberItem.userID]),
+                                                      ),
+                                                    ],
+                                                    if (imGroupOwner) ...[
+                                                      PopupMenuItem(
+                                                        child: const ListTile(
+                                                            leading: Icon(Icons.handshake),
+                                                            title: Text('Transfer Group Owner')),
+                                                        onTap: () =>
+                                                            ZIMKit().transferGroupOwner(groupID, memberItem.userID),
+                                                      ),
+                                                      PopupMenuItem(
+                                                        child: ListTile(
+                                                            leading: const Icon(Icons.diversity_3),
+                                                            title: (memberItem.memberRole == 3)
+                                                                ? const Text('Set Group Manager')
+                                                                : const Text('Unset Group Manager')),
+                                                        onTap: () => ZIMKit().setGroupMemberRole(
+                                                            conversationID: groupID,
+                                                            userID: memberItem.userID,
+                                                            role: (memberItem.memberRole == 3) ? 2 : 3),
+                                                      ),
+                                                    ],
+                                                    PopupMenuItem(
+                                                      child: const ListTile(
+                                                          leading: Icon(Icons.chat), title: Text('Private Chat')),
+                                                      onTap: () {
+                                                        Navigator.pushReplacement(context,
+                                                            MaterialPageRoute(builder: (context) {
+                                                          return DemoCahttingMessageListPage(
+                                                            conversationID: memberItem.userID,
+                                                            conversationType: ZIMConversationType.peer,
+                                                          );
+                                                        }));
+                                                      },
+                                                    ),
+                                                  ];
+                                                },
+                                              );
+                                            } else {
+                                              return const SizedBox.shrink();
+                                            }
+                                          },
+                                        );
                                       },
-                                    )
+                                    ),
                                   ]),
                                 ],
                               ),
