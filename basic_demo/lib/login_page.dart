@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
 
@@ -54,7 +55,8 @@ class _ZIMKitDemoLoginPageState extends State<ZIMKitDemoLoginPage> {
                       ),
                       TextFormField(
                         controller: userName,
-                        decoration: const InputDecoration(labelText: 'user name'),
+                        decoration:
+                            const InputDecoration(labelText: 'user name'),
                       ),
                       const SizedBox(height: 20),
                       loginButton(),

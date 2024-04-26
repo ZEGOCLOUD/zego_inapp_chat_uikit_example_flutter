@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+
 import 'package:zego_zimkit/zego_zimkit.dart';
 
 part 'red_envelope_defines.dart';
@@ -16,7 +17,8 @@ void demoSendRedEnvelope(conversationID, conversationType) {
   );
 }
 
-Widget demoSendRedEnvelopeButton(String conversationID, ZIMConversationType conversationType) {
+Widget demoSendRedEnvelopeButton(
+    String conversationID, ZIMConversationType conversationType) {
   return IconButton(
     onPressed: () => demoSendRedEnvelope(conversationID, conversationType),
     icon: const Icon(Icons.attach_money),

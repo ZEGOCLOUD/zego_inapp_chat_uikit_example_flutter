@@ -1,8 +1,7 @@
 import 'dart:convert';
-import 'dart:math';
 import 'dart:io' show Platform;
+import 'dart:math';
 
-// Package imports:
 import 'package:crypto/crypto.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 

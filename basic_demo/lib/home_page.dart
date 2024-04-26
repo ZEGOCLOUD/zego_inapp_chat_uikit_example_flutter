@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+
 import 'package:zego_zimkit/zego_zimkit.dart';
 
 import 'chatting_page.dart';
@@ -41,7 +42,7 @@ class _ZIMKitDemoHomePageState extends State<ZIMKitDemoHomePage> {
       onPressed: (context, conversation, defaultAction) {
         Navigator.push(context, MaterialPageRoute(
           builder: (context) {
-            return DemoCahttingMessageListPage(
+            return DemoChattingMessageListPage(
               conversationID: conversation.id,
               conversationType: conversation.type,
             );
@@ -97,14 +98,16 @@ class _ZIMKitDemoHomePageState extends State<ZIMKitDemoHomePage> {
                     label: 'Me',
                   ),
                 ],
-                onDestinationSelected: (index) => currentPageIndex.value = index,
+                onDestinationSelected: (index) =>
+                    currentPageIndex.value = index,
               );
             }),
       ),
     );
   }
 
-  Future<void> onGroupStateChangedEvent(ZIMKitEventGroupStateChanged event) async {
+  Future<void> onGroupStateChangedEvent(
+      ZIMKitEventGroupStateChanged event) async {
     debugPrint('getGroupStateChangedEventStream: $event');
     // If you need to automatically delete a group conversation that is already in the 'quit' state,
     // you can use this code here.

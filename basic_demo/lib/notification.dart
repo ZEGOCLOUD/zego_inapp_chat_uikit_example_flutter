@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
 
@@ -17,7 +18,8 @@ class NotificationManager {
   static NotificationManager instance = NotificationManager._internal();
   String? ignoreConversationID;
 
-  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
 
   bool isAppInBackground = false;
   int notificationID = 1;
@@ -27,7 +29,8 @@ class NotificationManager {
 
     if (Platform.isAndroid) {
       await flutterLocalNotificationsPlugin
-          .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
+          .resolvePlatformSpecificImplementation<
+              AndroidFlutterLocalNotificationsPlugin>()
           ?.requestNotificationsPermission();
       const channel = AndroidNotificationChannel(
         demoChannelID,
@@ -39,7 +42,8 @@ class NotificationManager {
         playSound: true,
       );
       await flutterLocalNotificationsPlugin
-          .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
+          .resolvePlatformSpecificImplementation<
+              AndroidFlutterLocalNotificationsPlugin>()
           ?.createNotificationChannel(channel);
     }
 
@@ -53,7 +57,8 @@ class NotificationManager {
             ),
       ),
       onDidReceiveNotificationResponse: onNotificationTappedBackground,
-      onDidReceiveBackgroundNotificationResponse: onNotificationTappedBackground,
+      onDidReceiveBackgroundNotificationResponse:
+          onNotificationTappedBackground,
     );
   }
 
@@ -82,9 +87,10 @@ class NotificationManager {
       navigatorKey.currentState?.push(
         MaterialPageRoute(
           builder: (context) {
-            return DemoCahttingMessageListPage(
+            return DemoChattingMessageListPage(
               conversationID: payload['id'],
-              conversationType: ZIMConversationType.values[payload['typeIndex']],
+              conversationType:
+                  ZIMConversationType.values[payload['typeIndex']],
             );
           },
         ),
@@ -96,14 +102,19 @@ class NotificationManager {
 
   int initTimestamp = DateTime.now().millisecondsSinceEpoch;
   Future<void> showNotifications(ZIMKitReceivedMessages messages) async {
-    messages.receiveMessages.where((e) => e.info.timestamp > initTimestamp).toList().forEach((message) async {
+    messages.receiveMessages
+        .where((e) => e.info.timestamp > initTimestamp)
+        .toList()
+        .forEach((message) async {
       var content = '[${message.type.name}]';
       if (ZIMKitMessageType.text == message.type) {
         content = message.textContent?.text ?? '';
       }
 
       var senderName = '';
-      await ZIMKit().queryUser(message.info.senderUserID).then((ZIMUserFullInfo zimResult) {
+      await ZIMKit()
+          .queryUser(message.info.senderUserID)
+          .then((ZIMUserFullInfo zimResult) {
         senderName = zimResult.baseInfo.userName;
       });
 
@@ -122,7 +133,8 @@ class NotificationManager {
           ),
           iOS: DarwinNotificationDetails(),
         ),
-        payload: jsonEncode({'id': messages.id, 'typeIndex': messages.type.index}),
+        payload:
+            jsonEncode({'id': messages.id, 'typeIndex': messages.type.index}),
       );
 
       notificationID++;

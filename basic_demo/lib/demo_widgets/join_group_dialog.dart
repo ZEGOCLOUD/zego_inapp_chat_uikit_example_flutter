@@ -41,7 +41,7 @@ void showDefaultJoinGroupDialog(BuildContext context) {
         ZIMKit().joinGroup(groupIDController.text).then((int errorCode) {
           if (errorCode == 0) {
             Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return DemoCahttingMessageListPage(
+              return DemoChattingMessageListPage(
                 conversationID: groupIDController.text,
                 conversationType: ZIMConversationType.group,
               );

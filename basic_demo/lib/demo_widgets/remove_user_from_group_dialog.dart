@@ -1,6 +1,7 @@
 part of 'default_dialogs.dart';
 
-void showDefaultRemoveUserFromGroupDialog(BuildContext context, String groupID) {
+void showDefaultRemoveUserFromGroupDialog(
+    BuildContext context, String groupID) {
   final groupUsersController = TextEditingController();
   Timer.run(() {
     showDialog<bool>(
@@ -45,7 +46,9 @@ void showDefaultRemoveUserFromGroupDialog(BuildContext context, String groupID) 
     ).then((bool? ok) {
       if (ok != true) return;
       if (groupUsersController.text.isNotEmpty) {
-        ZIMKit().removeUesrsFromGroup(groupID, groupUsersController.text.split(',')).then((int? errorCode) {
+        ZIMKit()
+            .removeUesrsFromGroup(groupID, groupUsersController.text.split(','))
+            .then((int? errorCode) {
           if (errorCode != 0) {
             debugPrint('addUersToGroup faild');
           }

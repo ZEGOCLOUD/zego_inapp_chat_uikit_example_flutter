@@ -9,7 +9,8 @@ ButtonStyle sendRedEnvelopeButtonStyle() {
     backgroundColor: MaterialStateProperty.all(Colors.redAccent),
     foregroundColor: MaterialStateProperty.all(Colors.white),
     shape: MaterialStateProperty.all(
-      const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5))),
+      const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(5))),
     ),
   );
 }

@@ -10,7 +10,8 @@ class RedEnvelopeMessage extends StatelessWidget {
 
   void onTap() {
     debugPrint('RedEnvelopeMessage: onTap');
-    ZIMKit().updateLocalExtendedData(message, 'localExtendedData-${Random().nextInt(99)}');
+    ZIMKit().updateLocalExtendedData(
+        message, 'localExtendedData-${Random().nextInt(99)}');
   }
 
   @override
@@ -41,11 +42,16 @@ class RedEnvelopeMessage extends StatelessWidget {
                               width: redEnvelopeHeight * 0.7,
                               height: redEnvelopeHeight,
                               color: Colors.red,
-                              child: const Center(child: CircleAvatar(radius: 5, backgroundColor: Colors.amber)),
+                              child: const Center(
+                                  child: CircleAvatar(
+                                      radius: 5,
+                                      backgroundColor: Colors.amber)),
                             ),
                             const SizedBox(width: 16),
                             const Text('Red Envelope',
-                                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold)),
                           ],
                         ),
                         const Divider(thickness: 1),
@@ -53,7 +59,11 @@ class RedEnvelopeMessage extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisSize: MainAxisSize.max,
-                          children: [Text('ZEGOCLOUD', style: TextStyle(color: Colors.white, fontSize: 10))],
+                          children: [
+                            Text('ZEGOCLOUD',
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 10))
+                          ],
                         ),
                       ],
                     ),
@@ -68,7 +78,8 @@ class RedEnvelopeMessage extends StatelessWidget {
                 children: [
                   ValueListenableBuilder(
                     valueListenable: message.localExtendedData,
-                    builder: (BuildContext context, String localExtendedData, Widget? child) {
+                    builder: (BuildContext context, String localExtendedData,
+                        Widget? child) {
                       return Text(localExtendedData);
                     },
                   ),

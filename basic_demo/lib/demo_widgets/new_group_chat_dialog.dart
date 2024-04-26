@@ -71,7 +71,8 @@ void showDefaultNewGroupChatDialog(BuildContext context) {
       },
     ).then((bool? ok) {
       if (ok != true) return;
-      if (groupNameController.text.isNotEmpty && groupUsersController.text.isNotEmpty) {
+      if (groupNameController.text.isNotEmpty &&
+          groupUsersController.text.isNotEmpty) {
         ZIMKit()
             .createGroup(
           groupNameController.text,
@@ -81,7 +82,7 @@ void showDefaultNewGroupChatDialog(BuildContext context) {
             .then((String? conversationID) {
           if (conversationID != null) {
             Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return DemoCahttingMessageListPage(
+              return DemoChattingMessageListPage(
                 conversationID: conversationID,
                 conversationType: ZIMConversationType.group,
               );

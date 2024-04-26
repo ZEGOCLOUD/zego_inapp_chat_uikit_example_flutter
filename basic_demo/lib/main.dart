@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
 import 'package:zego_uikit_signaling_plugin/zego_uikit_signaling_plugin.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
+import 'package:bot_toast/bot_toast.dart';
 
 import 'constants.dart';
 import 'home_page.dart';
@@ -91,12 +93,20 @@ class ZIMKitDemoState extends State<ZIMKitDemo> {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    final botToastBuilder = BotToastInit();
     return MaterialApp(
       navigatorKey: navigatorKey,
+      builder: (context, child) {
+        child = botToastBuilder(context, child);
+        return child;
+      },
+      navigatorObservers: [BotToastNavigatorObserver()],
       debugShowCheckedModeBanner: false,
       title: 'ZIMKit Demo',
       theme: ThemeData(primarySwatch: Colors.blue),
-      home: currentUser.id.isEmpty ? const ZIMKitDemoLoginPage() : autoConnectting(),
+      home: currentUser.id.isEmpty
+          ? const ZIMKitDemoLoginPage()
+          : autoConnectting(),
     );
   }
 
@@ -105,7 +115,9 @@ class ZIMKitDemoState extends State<ZIMKitDemo> {
       valueListenable: autoConnectDoneNotifier,
       builder: (context, connectDone, _) {
         if (connectDone) {
-          return autoConnectSuccess ? const ZIMKitDemoHomePage() : const ZIMKitDemoLoginPage();
+          return autoConnectSuccess
+              ? const ZIMKitDemoHomePage()
+              : const ZIMKitDemoLoginPage();
         }
 
         /// waiting for the result of auto connect

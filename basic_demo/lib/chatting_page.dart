@@ -2,14 +2,16 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
 import 'package:zego_zimkit/zego_zimkit.dart';
+import 'package:bot_toast/bot_toast.dart';
 
 import 'chatting_page_actions.dart';
 import 'demo_widgets/demo_widgets.dart';
 import 'notification.dart';
 
-class DemoCahttingMessageListPage extends StatefulWidget {
-  const DemoCahttingMessageListPage({
+class DemoChattingMessageListPage extends StatefulWidget {
+  const DemoChattingMessageListPage({
     Key? key,
     required this.conversationID,
     required this.conversationType,
@@ -19,10 +21,12 @@ class DemoCahttingMessageListPage extends StatefulWidget {
   final ZIMConversationType conversationType;
 
   @override
-  State<DemoCahttingMessageListPage> createState() => _DemoCahttingMessageListPageState();
+  State<DemoChattingMessageListPage> createState() =>
+      _DemoChattingMessageListPageState();
 }
 
-class _DemoCahttingMessageListPageState extends State<DemoCahttingMessageListPage> {
+class _DemoChattingMessageListPageState
+    extends State<DemoChattingMessageListPage> {
   List<StreamSubscription> sbuscriptions = [];
 
   // In the initState method, subscribe the event.
@@ -30,7 +34,9 @@ class _DemoCahttingMessageListPageState extends State<DemoCahttingMessageListPag
   void initState() {
     sbuscriptions = [
       if (widget.conversationType == ZIMConversationType.group)
-        ZIMKit().getGroupStateChangedEventStream().listen(onGroupStateChangedEvent)
+        ZIMKit()
+            .getGroupStateChangedEventStream()
+            .listen(onGroupStateChangedEvent)
     ];
     // When on the chat page, the notification for that chat page is not displayed.
     NotificationManager().ignoreConversationID = widget.conversationID;
@@ -53,14 +59,55 @@ class _DemoCahttingMessageListPageState extends State<DemoCahttingMessageListPag
     return ZIMKitMessageListPage(
       conversationID: widget.conversationID,
       conversationType: widget.conversationType,
+      events: ZIMKitMessageListPageEvents(
+        audioRecord: ZIMKitAudioRecordEvents(
+          onFailed: (int errorCode) {
+            /// audio message's error list:  https://doc-preview-zh.zego.im/article/20148
+            debugPrint('onRecordFailed: $errorCode');
+            var errorMessage = 'record failed:$errorCode';
+            switch (errorCode) {
+              case 32:
+                errorMessage = 'recording time is too short';
+                break;
+            }
+            BotToast.showText(
+              text: errorMessage,
+              contentColor: Colors.red,
+              textStyle: const TextStyle(fontSize: 10, color: Colors.white),
+            );
+          },
+          onCountdownTick: (int remainingSecond) {
+            debugPrint('onCountdownTick: $remainingSecond');
+            if (remainingSecond > 5 || remainingSecond <= 0) {
+              return;
+            }
+
+            BotToast.showText(
+              text: 'time remaining: $remainingSecond seconds',
+              contentColor: Colors.black.withOpacity(0.3),
+              textStyle: const TextStyle(fontSize: 10, color: Colors.white),
+              duration: Duration(milliseconds: 800),
+            );
+          },
+        ),
+      ),
       onMessageSent: (ZIMKitMessage message) {
         if (message.info.error != null) {
-          debugPrint('onMessageSent error: ${message.info.error!.message}, ${message.info.error!.code}');
+          debugPrint(
+              'onMessageSent error: ${message.info.error!.message}, ${message.info.error!.code}');
+          BotToast.showText(
+            text: 'message send failed:'
+                '${message.info.error!.message}, '
+                'code:${message.info.error!.code}',
+            contentColor: Colors.red,
+            textStyle: const TextStyle(fontSize: 10, color: Colors.white),
+          );
         } else {
           debugPrint('onMessageSent: ${message.type.name}');
         }
       },
-      appBarActions: demoAppBarActions(context, widget.conversationID, widget.conversationType),
+      appBarActions: demoAppBarActions(
+          context, widget.conversationID, widget.conversationType),
       onMessageItemLongPress: onMessageItemLongPress,
       messageListBackgroundBuilder: (context, defaultWidget) {
         return const ColoredBox(color: Colors.white);
@@ -76,7 +123,7 @@ class _DemoCahttingMessageListPageState extends State<DemoCahttingMessageListPag
       //   }
       // },
       // messageInputActions: [
-      //   ZIMKitMessageInputAction.right(demoSendRedEnvelopeButton(
+      //   ZIMKitMessageInputAction.more(demoSendRedEnvelopeButton(
       //     widget.conversationID,
       //     widget.conversationType,
       //   )),
@@ -84,7 +131,8 @@ class _DemoCahttingMessageListPageState extends State<DemoCahttingMessageListPag
     );
   }
 
-  Future<void> onGroupStateChangedEvent(ZIMKitEventGroupStateChanged event) async {
+  Future<void> onGroupStateChangedEvent(
+      ZIMKitEventGroupStateChanged event) async {
     debugPrint('getGroupStateChangedEventStream: $event');
     // If you need to automatically exit the page and delete a group
     // conversation that is already in the 'quit' state,

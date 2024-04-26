@@ -35,7 +35,7 @@ void showDefaultNewPeerChatDialog(BuildContext context) {
       if (ok != true) return;
       if (userIDController.text.isNotEmpty) {
         Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return DemoCahttingMessageListPage(
+          return DemoChattingMessageListPage(
             conversationID: userIDController.text,
             conversationType: ZIMConversationType.peer,
           );

@@ -45,7 +45,9 @@ void showDefaultAddUserToGroupDialog(BuildContext context, String groupID) {
     ).then((bool? ok) {
       if (ok != true) return;
       if (groupUsersController.text.isNotEmpty) {
-        ZIMKit().addUersToGroup(groupID, groupUsersController.text.split(',')).then((int? errorCode) {
+        ZIMKit()
+            .addUersToGroup(groupID, groupUsersController.text.split(','))
+            .then((int? errorCode) {
           if (errorCode != 0) {
             debugPrint('addUersToGroup faild');
           }

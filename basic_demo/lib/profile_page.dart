@@ -1,5 +1,6 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
 
 import 'constants.dart';
@@ -31,10 +32,12 @@ class _ProfilePageState extends State<ProfilePage> {
                 imageBuilder: (context, imageProvider) => Container(
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
+                    image: DecorationImage(
+                        image: imageProvider, fit: BoxFit.cover),
                   ),
                 ),
-                progressIndicatorBuilder: (context, url, downloadProgress) => CircularProgressIndicator(
+                progressIndicatorBuilder: (context, url, downloadProgress) =>
+                    CircularProgressIndicator(
                   value: downloadProgress.progress,
                 ),
                 errorWidget: (_, url, error) => const Icon(Icons.person),
