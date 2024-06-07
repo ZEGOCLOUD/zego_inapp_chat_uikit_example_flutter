@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
@@ -6,6 +7,7 @@ import 'package:zego_uikit_signaling_plugin/zego_uikit_signaling_plugin.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
 import 'package:bot_toast/bot_toast.dart';
 
+import 'avatar.dart';
 import 'constants.dart';
 import 'home_page.dart';
 import 'login_page.dart';
@@ -77,7 +79,7 @@ class ZIMKitDemoState extends State<ZIMKitDemo> {
           .connectUser(
         id: currentUser.id,
         name: currentUser.name,
-        avatarUrl: 'https://robohash.org/${currentUser.id}.png?set=set4',
+        avatarUrl: avatarURL(currentUser.id),
       )
           .then((errorCode) async {
         autoConnectSuccess = errorCode == 0;
@@ -106,11 +108,11 @@ class ZIMKitDemoState extends State<ZIMKitDemo> {
       theme: ThemeData(primarySwatch: Colors.blue),
       home: currentUser.id.isEmpty
           ? const ZIMKitDemoLoginPage()
-          : autoConnectting(),
+          : autoConnecting(),
     );
   }
 
-  Widget autoConnectting() {
+  Widget autoConnecting() {
     return ValueListenableBuilder<bool>(
       valueListenable: autoConnectDoneNotifier,
       builder: (context, connectDone, _) {
@@ -142,6 +144,44 @@ class ZIMKitDemoState extends State<ZIMKitDemo> {
 
 /// on App's user login
 void onUserLogin(String id, String name) {
+  final sendCallingInvitationButton = StreamBuilder(
+      stream: ZegoUIKit().getUserListStream(),
+      builder: (context, snapshot) {
+        return ValueListenableBuilder(
+            valueListenable:
+
+                /// '#' is removed when send call invitation
+                ZIMKit().queryGroupMemberList('#${ZegoUIKit().getRoom().id}'),
+            builder: (context, List<ZIMGroupMemberInfo> members, _) {
+              final memberIDsInCall =
+                  ZegoUIKit().getRemoteUsers().map((user) => user.id).toList();
+              final membersNotInCall = members.where((member) {
+                if (member.userID == ZIMKit().currentUser()!.baseInfo.userID) {
+                  return false;
+                }
+
+                return !memberIDsInCall.contains(member.userID);
+              }).toList();
+              return ZegoSendCallingInvitationButton(
+                avatarBuilder: customAvatarBuilder,
+                selectedUsers: ZegoUIKit()
+                    .getRemoteUsers()
+                    .map((e) => ZegoCallUser(
+                          e.id,
+                          e.name,
+                        ))
+                    .toList(),
+                waitingSelectUsers: membersNotInCall
+                    .map((member) => ZegoCallUser(
+                          member.userID,
+                          member.userName,
+                        ))
+                    .toList(),
+              );
+            });
+      },
+    );
+
   /// initialized ZegoUIKitPrebuiltCallInvitationService
   /// when app's user is logged in or re-logged in
   /// We recommend calling this method as soon as the user logs in to your app.
@@ -151,8 +191,11 @@ void onUserLogin(String id, String name) {
     userID: id,
     userName: name,
     plugins: [ZegoUIKitSignalingPlugin()],
+    config: ZegoCallInvitationConfig(
+      canInvitingInCalling: true,
+    ),
     notificationConfig: ZegoCallInvitationNotificationConfig(
-      androidNotificationConfig: ZegoAndroidNotificationConfig(
+      androidNotificationConfig: ZegoCallAndroidNotificationConfig(
         /// call notification
         channelID: 'ZegoUIKit',
         channelName: 'Call Notifications',
@@ -166,6 +209,20 @@ void onUserLogin(String id, String name) {
         messageIcon: 'message',
       ),
     ),
+    requireConfig: (ZegoCallInvitationData data) {
+      final config = ZegoCallInvitationType.videoCall == data.type
+          ? ZegoUIKitPrebuiltCallConfig.groupVideoCall()
+          : ZegoUIKitPrebuiltCallConfig.groupVoiceCall();
+
+      config.audioVideoView.useVideoViewAspectFill = true;
+      config.topMenuBar.extendButtons = [
+        sendCallingInvitationButton,
+      ];
+
+      config.avatarBuilder = customAvatarBuilder;
+
+      return config;
+    },
   );
 }
 

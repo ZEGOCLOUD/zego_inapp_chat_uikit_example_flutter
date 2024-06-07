@@ -107,27 +107,29 @@ class _DemoChattingMessageListPageState
         }
       },
       appBarActions: demoAppBarActions(
-          context, widget.conversationID, widget.conversationType),
+        context,
+        widget.conversationID,
+        widget.conversationType,
+      ),
       onMessageItemLongPress: onMessageItemLongPress,
       messageListBackgroundBuilder: (context, defaultWidget) {
         return const ColoredBox(color: Colors.white);
       },
-      /// If you want to test customMessage, you can uncomment the code below.
-      /// 
-      // messageContentBuilder: (context, message, defaultWidget) {
-      //   if (message.type == ZIMMessageType.custom &&
-      //       message.customContent!.type == DemoCustomMessageType.redEnvelope.index) {
-      //     return RedEnvelopeMessage(message: message);
-      //   } else {
-      //     return defaultWidget;
-      //   }
-      // },
-      // messageInputActions: [
-      //   ZIMKitMessageInputAction.more(demoSendRedEnvelopeButton(
-      //     widget.conversationID,
-      //     widget.conversationType,
-      //   )),
-      // ],
+      messageContentBuilder: (context, message, defaultWidget) {
+        if (message.type == ZIMMessageType.custom &&
+            message.customContent!.type ==
+                DemoCustomMessageType.redEnvelope.index) {
+          return RedEnvelopeMessage(message: message);
+        } else {
+          return defaultWidget;
+        }
+      },
+      messageInputActions: [
+        ZIMKitMessageInputAction.more(demoSendRedEnvelopeButton(
+          widget.conversationID,
+          widget.conversationType,
+        )),
+      ],
     );
   }
 
