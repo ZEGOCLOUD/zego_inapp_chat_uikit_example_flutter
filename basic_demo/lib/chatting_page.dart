@@ -27,12 +27,12 @@ class DemoChattingMessageListPage extends StatefulWidget {
 
 class _DemoChattingMessageListPageState
     extends State<DemoChattingMessageListPage> {
-  List<StreamSubscription> sbuscriptions = [];
+  List<StreamSubscription> subscriptions = [];
 
   // In the initState method, subscribe the event.
   @override
   void initState() {
-    sbuscriptions = [
+    subscriptions = [
       if (widget.conversationType == ZIMConversationType.group)
         ZIMKit()
             .getGroupStateChangedEventStream()
@@ -46,7 +46,7 @@ class _DemoChattingMessageListPageState
   // When the widget is disposed, please remember to cancel subscribe.
   @override
   void dispose() {
-    for (final element in sbuscriptions) {
+    for (final element in subscriptions) {
       element.cancel();
     }
     // After exiting the chat page, if the conversation continues to receive messages, the notification of the chat page needs to be displayed.
