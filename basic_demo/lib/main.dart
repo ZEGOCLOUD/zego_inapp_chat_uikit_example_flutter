@@ -1,11 +1,11 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
+import 'package:bot_toast/bot_toast.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
 import 'package:zego_uikit_signaling_plugin/zego_uikit_signaling_plugin.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
-import 'package:bot_toast/bot_toast.dart';
 
 import 'avatar.dart';
 import 'constants.dart';
@@ -16,9 +16,6 @@ import 'utils.dart';
 
 /// define a navigator key
 final navigatorKey = GlobalKey<NavigatorState>();
-
-const int yourAppID = ;
-const String yourAppSign = ;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -145,42 +142,42 @@ class ZIMKitDemoState extends State<ZIMKitDemo> {
 /// on App's user login
 void onUserLogin(String id, String name) {
   final sendCallingInvitationButton = StreamBuilder(
-      stream: ZegoUIKit().getUserListStream(),
-      builder: (context, snapshot) {
-        return ValueListenableBuilder(
-            valueListenable:
+    stream: ZegoUIKit().getUserListStream(),
+    builder: (context, snapshot) {
+      return ValueListenableBuilder(
+          valueListenable:
 
-                /// '#' is removed when send call invitation
-                ZIMKit().queryGroupMemberList('#${ZegoUIKit().getRoom().id}'),
-            builder: (context, List<ZIMGroupMemberInfo> members, _) {
-              final memberIDsInCall =
-                  ZegoUIKit().getRemoteUsers().map((user) => user.id).toList();
-              final membersNotInCall = members.where((member) {
-                if (member.userID == ZIMKit().currentUser()!.baseInfo.userID) {
-                  return false;
-                }
+              /// '#' is removed when send call invitation
+              ZIMKit().queryGroupMemberList('#${ZegoUIKit().getRoom().id}'),
+          builder: (context, List<ZIMGroupMemberInfo> members, _) {
+            final memberIDsInCall =
+                ZegoUIKit().getRemoteUsers().map((user) => user.id).toList();
+            final membersNotInCall = members.where((member) {
+              if (member.userID == ZIMKit().currentUser()!.baseInfo.userID) {
+                return false;
+              }
 
-                return !memberIDsInCall.contains(member.userID);
-              }).toList();
-              return ZegoSendCallingInvitationButton(
-                avatarBuilder: customAvatarBuilder,
-                selectedUsers: ZegoUIKit()
-                    .getRemoteUsers()
-                    .map((e) => ZegoCallUser(
-                          e.id,
-                          e.name,
-                        ))
-                    .toList(),
-                waitingSelectUsers: membersNotInCall
-                    .map((member) => ZegoCallUser(
-                          member.userID,
-                          member.userName,
-                        ))
-                    .toList(),
-              );
-            });
-      },
-    );
+              return !memberIDsInCall.contains(member.userID);
+            }).toList();
+            return ZegoSendCallingInvitationButton(
+              avatarBuilder: customAvatarBuilder,
+              selectedUsers: ZegoUIKit()
+                  .getRemoteUsers()
+                  .map((e) => ZegoCallUser(
+                        e.id,
+                        e.name,
+                      ))
+                  .toList(),
+              waitingSelectUsers: membersNotInCall
+                  .map((member) => ZegoCallUser(
+                        member.userID,
+                        member.userName,
+                      ))
+                  .toList(),
+            );
+          });
+    },
+  );
 
   /// initialized ZegoUIKitPrebuiltCallInvitationService
   /// when app's user is logged in or re-logged in

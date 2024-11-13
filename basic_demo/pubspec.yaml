@@ -11,16 +11,16 @@ dependencies:
   flutter:
     sdk: flutter
 
-  zego_uikit: ^2.24.2
-  zego_zimkit: ^1.18.8
-  zego_uikit_prebuilt_call: ^4.12.9
-  zego_uikit_signaling_plugin:
+  zego_uikit: ^2.28.0
+  zego_zimkit: ^1.18.15
+  zego_uikit_prebuilt_call: ^4.17.0
+  zego_uikit_signaling_plugin: ^2.8.2
 
   cupertino_icons: ^1.0.2
   device_info_plus: any
-  shared_preferences: any
+  shared_preferences: ^2.2.3
   cached_network_image: ^3.3.0
-  flutter_local_notifications: ^16.1.0
+  flutter_local_notifications: ^17.2.2
   crypto: ^3.0.3
   bot_toast: ^4.1.3
 
